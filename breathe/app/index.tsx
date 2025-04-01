@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import MapView, { Marker, MapPressEvent } from 'react-native-maps';
 
+
 type AQIReading = {
   DateObserved: string;
   HourObserved: number;
@@ -32,8 +33,7 @@ export default function App() {
 
       if (!data || data.length === 0) {
         Alert.alert("Try clicking closer to a major US city.");
-        setAqiInfo(null);
-        return;
+        return null;
       }
 
       const highest = data.reduce((max, reading) =>
@@ -41,18 +41,20 @@ export default function App() {
       );
 
       setAqiInfo(highest);
+      return highest.AQI
     } catch (err) {
       console.error("AQI fetch error:", err);
       Alert.alert("Failed to fetch AQI data.");
+      return null;
     }
   };
 
   const handleMapPress = async (e: MapPressEvent) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     setCoords({ latitude, longitude });
-    await fetchAQI(latitude, longitude);
-    if (aqiInfo) {
-      sendAQIToESP32(aqiInfo.AQI);
+    const aqi = await fetchAQI(latitude, longitude);
+    if (aqi != null) {
+      sendAQIToESP32(aqi);
     }
   };
 
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
 });
 
 const sendAQIToESP32 = async (aqi: number) => {
-  const ESP32_IP = "http://172.20.10.6"; // replace with your ESP32's IP
+  const ESP32_IP = "http://172.20.10.4"; // replace with your ESP32's IP
 
   try {
     const response = await fetch(`${ESP32_IP}/aqi`, {
