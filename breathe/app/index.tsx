@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Alert, Platform } from 'react-native';
 import MapView, { Marker, MapPressEvent, Circle } from 'react-native-maps';
 import AqiSlider from '@/components/AQISlider';
@@ -44,17 +44,15 @@ export default function App() {
     );
   };
 
-  const fetchAQI = async (lat: number, lon: number) => {
+  const fetchAQI = async (lat: number, lon: number, date: Date) => {
     const API_KEY = '87202674-97D8-40A6-8AD2-B998075B6BFA';
-    const dateStr = formatDate(selectedDate);
+    const dateStr = formatDate(date);
 
-    const endpoint = isToday(selectedDate)
+    const endpoint = isToday(date)
   ? `https://www.airnowapi.org/aq/observation/latLong/current?`
   : `https://www.airnowapi.org/aq/observation/latLong/historical?date=${dateStr}T00-0000&`;
 
-const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}&distance=25&API_KEY=${API_KEY}`;
-
-
+  const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}&distance=25&API_KEY=${API_KEY}`;
     try {
       const res = await fetch(url);
       const text = await res.text();
@@ -85,16 +83,32 @@ const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}
       return null;
     }
   };
-
+  
   const handleMapPress = async (e: MapPressEvent) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     setCoords({ latitude, longitude });
-    const aqi = await fetchAQI(latitude, longitude);
+    const aqi = await fetchAQI(latitude, longitude, selectedDate);
     if (aqi != null) {
       sendAQIToESP32(aqi, selectedDate);
     }
   };
 
+  useEffect(() => {
+    if (!coords?.latitude || !coords.longitude || !selectedDate) return;
+
+    const fetchAqiInfo = async () => {
+      try {
+        const aqi = await fetchAQI(coords.latitude, coords.longitude, selectedDate);
+        if (aqi != null) {
+          sendAQIToESP32(aqi, selectedDate);
+        }
+      } catch (error) {
+        console.error('Failed to fetch AQI info:', error);
+      }
+    };
+    fetchAqiInfo();
+  }, [selectedDate, coords]);
+  
   return (
     <View style={styles.container}>
       <DateTimePicker
@@ -134,7 +148,7 @@ const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}
         ))}
       </MapView>
 
-      <AQIPresetList/>
+      <AQIPresetList setCoords={setCoords} setSelectedDate={setSelectedDate}/>
 
       {aqiInfo && (
         <View style={styles.infoBox}>
@@ -142,11 +156,9 @@ const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}
           <Text>{aqiInfo.ParameterName} - {aqiInfo.Category.Name}</Text>
           <Text>{aqiInfo.ReportingArea}, {aqiInfo.StateCode}</Text>
           <Text>{aqiInfo.DateObserved}</Text>
+          <Text>{coords?.latitude} {coords?.latitude}</Text>
         </View>
       )}
-    
-
-
     </View>
   );
 }

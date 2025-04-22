@@ -2,21 +2,38 @@ import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet, GestureResponderEvent } from 'react-native';
 
 type Props = {
-    aqi?: number;
+    aqi: number;
     color: string;
-    location?: string;
-    time?: string;
-    onPress?: (event: GestureResponderEvent) => void;
+    location: string;
+    coords: {latitude: number, longitude: number};
+    date: Date;
+    setSelectedDate: (date: Date) => void;
+    setCoords: (coords: {latitude: number, longitude: number}) => void;
 };
+
+function formatDate(date: Date) { 
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const yyyy = date.getFullYear();
+
+    const formatted = `${dd}/${mm}/${yyyy}`;
+    return formatted;
+}
   
-const AQIBoxButton = ({ aqi = 85, color, location = "Hanoi", time = "2:45 PM", onPress }: Props) => {
-  return (
+const AQIBoxButton = ({ aqi, color, location, date,  coords, setCoords, setSelectedDate }: Props) => {
+    const onPress = () => {
+        setCoords(coords);
+        setSelectedDate(new Date());
+        console.log(`AQI: ${aqi}, Location: ${location}, Time: ${date}`);
+    }
+
+    return (
     <TouchableOpacity style={[styles.box, {backgroundColor: color}]} onPress={onPress}>
       <Text style={styles.aqi}>AQI: {aqi}</Text>
       <View style={styles.infoRow}>
           <Text style={styles.location}>{location}</Text>
           <Text style={styles.separator}> • </Text>
-          <Text style={styles.time}>{time}</Text>
+          <Text style={styles.time}>{formatDate(date)}</Text>
       </View>
     </TouchableOpacity>
   );

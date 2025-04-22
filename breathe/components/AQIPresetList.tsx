@@ -8,7 +8,12 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AQIBoxButton from './AQIBoxButton';
 
-const AQIPresetList: React.FC = () => {
+type Props = {
+    setCoords: (coords: {latitude :number, longitude: number}) => void;  
+    setSelectedDate: (date: Date) => void;
+}
+
+const AQIPresetList = ({setCoords, setSelectedDate}: Props) => {
   const [isVisible, setIsVisible] = useState(true);
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
@@ -35,10 +40,22 @@ const AQIPresetList: React.FC = () => {
 
       {isVisible && (
         <View style={styles.boxWrapper}>
-            <AQIBoxButton aqi={20} color="#A8E6CF" location="Austin" time="9/11/12" />
-            <AQIBoxButton aqi={33} color="#FFD3B6" location="Los Angeles" time="2/12/23" />
-            <AQIBoxButton aqi={57} color="#FF6B6B" location="Chicago" time="7/20/22" />
-            <AQIBoxButton aqi={90} color="#8B0000" location="New York" time="1/24/25" />
+            <AQIBoxButton 
+                setSelectedDate={setSelectedDate} setCoords={setCoords} 
+                coords={{latitude: 21.0285, longitude: 105.8542}}
+                aqi={20} color="#A8E6CF" location="Austin" date={new Date("2025-04-22T10:30:00Z")}/>
+            <AQIBoxButton 
+                setSelectedDate={setSelectedDate} setCoords={setCoords} 
+                coords ={{latitude: 34.0212, longitude: -118.2589}}
+                aqi={33} color="#FFD3B6" location="Los Angeles" date={new Date("2025-04-22T10:30:00Z")}/>
+            <AQIBoxButton 
+                setSelectedDate={setSelectedDate} setCoords={setCoords} 
+                coords ={{latitude: 21.0285, longitude: 105.8542}}
+                aqi={57} color="#FF6B6B" location="Chicago" date={new Date("2025-04-22T10:30:00Z")} />
+            <AQIBoxButton 
+                setSelectedDate={setSelectedDate} setCoords={setCoords} 
+                coords ={{latitude: 21.0285, longitude: 105.8542}}
+                aqi={90} color="#8B0000" location="New York" date={new Date("2025-04-22T10:30:00Z")}/>
         </View>
       )}
     </View>
