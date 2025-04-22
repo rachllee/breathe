@@ -3,14 +3,15 @@ import { TouchableOpacity, Text, View, StyleSheet, GestureResponderEvent } from 
 
 type Props = {
     aqi?: number;
+    color: string;
     location?: string;
     time?: string;
     onPress?: (event: GestureResponderEvent) => void;
 };
   
-const AQIBoxButton = ({ aqi = 85, location = "Hanoi", time = "2:45 PM", onPress }: Props) => {
+const AQIBoxButton = ({ aqi = 85, color, location = "Hanoi", time = "2:45 PM", onPress }: Props) => {
   return (
-    <TouchableOpacity style={styles.box} onPress={onPress}>
+    <TouchableOpacity style={[styles.box, {backgroundColor: color}]} onPress={onPress}>
       <Text style={styles.aqi}>AQI: {aqi}</Text>
       <View style={styles.infoRow}>
           <Text style={styles.location}>{location}</Text>
@@ -23,7 +24,6 @@ const AQIBoxButton = ({ aqi = 85, location = "Hanoi", time = "2:45 PM", onPress 
 
 const styles = StyleSheet.create({
   box: {
-    backgroundColor: 'white',
     borderRadius: 12,
     padding: 20,
     justifyContent: 'center',
@@ -39,19 +39,19 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   separator: {
-    fontSize: 16,
+    fontSize: 12,
     marginHorizontal: 4,
   },
   aqi: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   location: {
-    fontSize: 16,
+    fontSize: 12,
     marginTop: 2,
   },
   time: {
-    fontSize: 16,
+    fontSize: 12,
     marginTop: 2,
   },
 });

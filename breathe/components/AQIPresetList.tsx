@@ -35,10 +35,10 @@ const AQIPresetList: React.FC = () => {
 
       {isVisible && (
         <View style={styles.boxWrapper}>
-          <AQIBoxButton aqi={90} location="New York" time="1/24/25" />
-          <AQIBoxButton aqi={33} location="Los Angeles" time="2/12/23" />
-          <AQIBoxButton aqi={57} location="Chicago" time="7/20/22" />
-          <AQIBoxButton aqi={20} location="Austin" time="9/11/12" />
+            <AQIBoxButton aqi={20} color="#A8E6CF" location="Austin" time="9/11/12" />
+            <AQIBoxButton aqi={33} color="#FFD3B6" location="Los Angeles" time="2/12/23" />
+            <AQIBoxButton aqi={57} color="#FF6B6B" location="Chicago" time="7/20/22" />
+            <AQIBoxButton aqi={90} color="#8B0000" location="New York" time="1/24/25" />
         </View>
       )}
     </View>
