@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 
-const AQI_LEVELS = [0, 50, 100, 150, 200, 300, 500];
+const AQI_LEVELS = [0, 100, 200, 300, 400, 500];
 
 function getClosestAQI(value: number) {
   return AQI_LEVELS.reduce((prev, curr) =>
@@ -25,7 +25,7 @@ const AqiSlider: React.FC<AqiSliderProps> = ({ initialValue = 50, onValueChange 
   };
 
   return (
-    <View>
+    <View style={{padding: 28}}>
       <Text style={styles.label}>Current AQI: {aqi}</Text>
 
       <Slider

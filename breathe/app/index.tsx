@@ -4,6 +4,8 @@ import MapView, { Marker, MapPressEvent, Circle } from 'react-native-maps';
 import AqiSlider from '@/components/AQISlider';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import coverageSites from '../assets/coverage_sites.json';
+import AQIBoxButton from '@/components/AQIBoxButton';
+import AQIPresetList from '@/components/AQIPresetList';
 
 type AQIReading = {
   DateObserved: string;
@@ -132,6 +134,8 @@ const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}
         ))}
       </MapView>
 
+      <AQIPresetList/>
+
       {aqiInfo && (
         <View style={styles.infoBox}>
           <Text style={styles.title}>AQI: {aqiInfo.AQI}</Text>
@@ -140,7 +144,9 @@ const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}
           <Text>{aqiInfo.DateObserved}</Text>
         </View>
       )}
-      <AqiSlider/>
+    
+
+
     </View>
   );
 }
