@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Alert, Platform } from 'react-native';
 import MapView, { Marker, MapPressEvent, Circle } from 'react-native-maps';
+import AqiSlider from '@/components/AQISlider';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import coverageSites from '../assets/coverage_sites.json';
 
@@ -30,7 +31,7 @@ export default function App() {
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
-  };
+  }
 
   const isToday = (date: Date) => {
     const now = new Date();
@@ -139,6 +140,7 @@ const url = `${endpoint}format=application/json&latitude=${lat}&longitude=${lon}
           <Text>{aqiInfo.DateObserved}</Text>
         </View>
       )}
+      <AqiSlider/>
     </View>
   );
 }
