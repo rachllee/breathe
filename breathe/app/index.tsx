@@ -95,6 +95,7 @@ export default function App() {
 
   useEffect(() => {
     if (!coords?.latitude || !coords.longitude || !selectedDate) return;
+    console.log(selectedDate.toString());
 
     const fetchAqiInfo = async () => {
       try {
@@ -156,7 +157,6 @@ export default function App() {
           <Text>{aqiInfo.ParameterName} - {aqiInfo.Category.Name}</Text>
           <Text>{aqiInfo.ReportingArea}, {aqiInfo.StateCode}</Text>
           <Text>{aqiInfo.DateObserved}</Text>
-          <Text>{coords?.latitude} {coords?.latitude}</Text>
         </View>
       )}
     </View>

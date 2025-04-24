@@ -23,7 +23,7 @@ function formatDate(date: Date) {
 const AQIBoxButton = ({ aqi, color, location, date,  coords, setCoords, setSelectedDate }: Props) => {
     const onPress = () => {
         setCoords(coords);
-        setSelectedDate(new Date());
+        setSelectedDate(date);
         console.log(`AQI: ${aqi}, Location: ${location}, Time: ${date}`);
     }
 

@@ -42,20 +42,20 @@ const AQIPresetList = ({setCoords, setSelectedDate}: Props) => {
         <View style={styles.boxWrapper}>
             <AQIBoxButton 
                 setSelectedDate={setSelectedDate} setCoords={setCoords} 
-                coords={{latitude: 21.0285, longitude: 105.8542}}
-                aqi={20} color="#A8E6CF" location="Austin" date={new Date("2025-04-22T10:30:00Z")}/>
+                coords={{latitude: 29.7516111969, longitude: -95.2716876815}}
+                aqi={43} color="#A8E6CF" location="Houston" date={new Date("2025-02-19T10:30:00Z")}/>
             <AQIBoxButton 
                 setSelectedDate={setSelectedDate} setCoords={setCoords} 
                 coords ={{latitude: 34.0212, longitude: -118.2589}}
-                aqi={33} color="#FFD3B6" location="Los Angeles" date={new Date("2025-04-22T10:30:00Z")}/>
+                aqi={73} color="#FFDA03" location="Los Angeles" date={new Date("2025-01-18T10:30:00Z")}/>
             <AQIBoxButton 
                 setSelectedDate={setSelectedDate} setCoords={setCoords} 
-                coords ={{latitude: 21.0285, longitude: 105.8542}}
-                aqi={57} color="#FF6B6B" location="Chicago" date={new Date("2025-04-22T10:30:00Z")} />
+                coords ={{latitude: 40.4522417345, longitude: -80.02305490804}}
+                aqi={148} color="#FFA500" location="Pittsburgh" date={new Date("2023-07-17T10:30:00Z")} />
             <AQIBoxButton 
                 setSelectedDate={setSelectedDate} setCoords={setCoords} 
-                coords ={{latitude: 21.0285, longitude: 105.8542}}
-                aqi={90} color="#8B0000" location="New York" date={new Date("2025-04-22T10:30:00Z")}/>
+                coords ={{latitude: 40.6867091041624, longitude: -73.998507536501}}
+                aqi={228} color="#8B0000" location="New York" date={new Date("2023-06-07T10:30:00Z")}/>
         </View>
       )}
     </View>
