@@ -126,6 +126,8 @@ export default function App() {
       <MapView
         style={styles.map}
         onPress={handleMapPress}
+        region={{...(coords ?? {latitude: 37.7749,
+          longitude: -122.4194}), latitudeDelta: 5, longitudeDelta: 5}}
         initialRegion={{
           latitude: 37.7749,
           longitude: -122.4194,
