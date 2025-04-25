@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Alert, Platform } from 'react-native';
 import MapView, { Marker, MapPressEvent, Circle } from 'react-native-maps';
 import AqiSlider from '@/components/AQISlider';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from '@/components/DatePicker';
 import coverageSites from '../assets/coverage_sites.json';
 import AQIBoxButton from '@/components/AQIBoxButton';
 import AQIPresetList from '@/components/AQIPresetList';
@@ -112,16 +112,7 @@ export default function App() {
   
   return (
     <View style={styles.container}>
-      <DateTimePicker
-        value={selectedDate}
-        mode="date"
-        display={Platform.OS === 'ios' ? 'inline' : 'default'}
-        maximumDate={new Date()}
-        onChange={(event, date) => {
-          if (date) setSelectedDate(date);
-        }}
-        style={styles.datePicker}
-      />
+      <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
 
       <MapView
         style={styles.map}
