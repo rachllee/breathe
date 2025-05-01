@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
+  Text
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AQIBoxButton from './AQIBoxButton';
@@ -32,7 +33,10 @@ const AQIPresetList = ({setCoords, setSelectedDate}: Props) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{padding: 10}} onPress={() => setIsVisible(prev => !prev)}>
+      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', padding: 10, gap: 4 }} onPress={() => setIsVisible(prev => !prev)}>
+        <View style={{ marginLeft: 10}}>
+          <Text style={{ fontSize: 16, color: '#000' }}>Presets</Text>
+        </View>
         <Animated.View style={{ transform: [{ rotate: rotation }] }}>
           <Ionicons name="chevron-up" size={24} color="#000" />
         </Animated.View>

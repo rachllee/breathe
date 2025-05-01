@@ -136,8 +136,8 @@ export default function App() {
               longitude: site.SiteLong,
             }}
             radius={25000}
-            strokeColor="rgba(0, 150, 0, 0.5)"
-            fillColor="rgba(0, 150, 0, 0.2)"
+            strokeColor="rgba(231, 82, 98, 0.5)"
+            fillColor="rgba(140,0, 148, 0.2)"
           />
         ))}
       </MapView>
