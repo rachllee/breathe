@@ -6,24 +6,23 @@
 const char* ssid = "Rachels iPhone";
 const char* password = "roachhhh";
 
-// --------- Stepper Motor Settings ---------
-#define MOTOR_STEPS 200          
-#define MICROSTEPS 16            
+// --------- stepper1 Motor Settings ---------
+#define MOTOR_STEPS 200 // Don't change. Values determined by hardware
+#define MICROSTEPS 8 // Don't change. Values determined by hardware
 #define STEP_PIN 32
 #define DIR_PIN 14
 #define EN_PIN 33
 
-BasicStepperDriver stepper(MOTOR_STEPS, DIR_PIN, STEP_PIN);
+BasicStepperDriver stepper1(MOTOR_STEPS, DIR_PIN, STEP_PIN);
+BasicStepperDriver stepper2(MOTOR_STEPS, 15, 33);
+BasicStepperDriver stepper3(MOTOR_STEPS, 27, 12);
 
 // --------- AQI Variables ---------
 int latestAQI = 50;
 float currentRPM = 30.0;  // Starting RPM
-unsigned long lastStepTime = 0;
-unsigned long stepIntervalMicros = 0;
 
-bool direction = true;
-const unsigned long cycleDuration = 3000; // Reverse every 3 seconds
-unsigned long lastDirectionChange = 0;
+int direction = 1;
+float totalStepsTaken = 0;
 
 WebServer server(80);
 
@@ -38,7 +37,9 @@ void handleAQIPost() {
     float rpm = 10.0 + 50.0 * (1 - pow(0.985, latestAQI));
 
     currentRPM = constrain(rpm, 2.0, 60.0);
-    stepper.setRPM(currentRPM);
+    stepper1.setRPM(currentRPM);
+    stepper2.setRPM(currentRPM);
+    stepper3.setRPM(currentRPM);
 
     Serial.print("Updated RPM: ");
     Serial.println(currentRPM);
@@ -49,16 +50,20 @@ void handleAQIPost() {
   }
 }
 
+bool usingWifi = false;
+
 void setup() {
   Serial.begin(115200);
 
 
   pinMode(EN_PIN, OUTPUT);
   digitalWrite(EN_PIN, LOW);
-  stepper.begin(currentRPM, MICROSTEPS);
+  stepper1.begin(currentRPM, MICROSTEPS);
+  stepper2.begin(currentRPM, MICROSTEPS);
+  stepper3.begin(currentRPM, MICROSTEPS);
 
 
-  WiFi.begin(ssid, password);
+  // WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -73,19 +78,23 @@ void setup() {
   server.begin();
   Serial.println("Server started.");
 
-  lastDirectionChange = millis();
 }
+
+const double stepSize1 = 1.8; // Ideally multiples of 1.8 / 8 because there are 8 microsteps per step
+const double stepSize2 = 2.7;
+const double stepSize3 = 3.6;
 
 void loop() {
   server.handleClient();
 
-  unsigned long now = millis();
-  if (now - lastDirectionChange > cycleDuration) {
-    direction = !direction;
-    lastDirectionChange = now;
+  if (totalStepsTaken == 100) {
+    direction *= -1;
+    totalStepsTaken = 0;
   }
+  totalStepsTaken += 1;
 
-
-  stepper.rotate(direction ? 1 : -1);
+  stepper1.rotate(direction * stepSize1);
+  stepper2.rotate(direction * stepSize2);
+  stepper3.rotate(direction * stepSize3);
 }
 
